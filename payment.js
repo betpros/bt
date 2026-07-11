@@ -1,10 +1,10 @@
 /* BetPro — Pricing & Payment page logic
    -----------------------------------------------------------------------
-   This file wires up the on-page UI for M-Pesa (Daraja STK Push) and
-   PesaPal Checkout. The fetch() calls below point at placeholder backend
-   endpoints — swap them for your real server routes when ready. Never
-   call the Safaricom Daraja or PesaPal APIs directly from the browser:
-   secrets must stay server-side.
+   Both the "M-Pesa" and "PesaPal" buttons go through the same PesaPal
+   checkout — PesaPal's own hosted page offers M-Pesa STK push as one of
+   the payment options, so there's only one real integration here. The
+   `method` value is just kept for display/records. Never call the
+   PesaPal API directly from the browser: secrets must stay server-side.
    ------------------------------------------------------------------- */
 (function () {
   "use strict";
@@ -85,52 +85,6 @@
   const LIVE = Boolean(API_BASE);
 
   /* ---------------------------------------------------------------------
-     M-Pesa STK Push
-     Live: browser -> backend (/api/mpesa/stk-push) -> Daraja API.
-     The backend then polls Safaricom's callback and this page polls the
-     backend until the customer enters their PIN (or cancels/times out).
-     --------------------------------------------------------------------- */
-  async function initiateMpesaPayment(payload) {
-    if (!LIVE) {
-      return new Promise((resolve) =>
-        setTimeout(() => resolve({ status: "pending", checkoutRequestId: "ws_CO_DEMO_" + Date.now(), demo: true }), 1200)
-      );
-    }
-
-    const res = await fetch(`${API_BASE}/api/mpesa/stk-push`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "M-Pesa request failed.");
-    return { status: "pending", checkoutRequestId: data.checkoutRequestId };
-  }
-
-  async function pollMpesaStatus(checkoutRequestId, onSettled) {
-    const started = Date.now();
-    const timeoutMs = 60000; // give the customer up to 60s to enter their PIN
-
-    (async function tick() {
-      if (Date.now() - started > timeoutMs) {
-        onSettled({ status: "TIMEOUT" });
-        return;
-      }
-      try {
-        const res = await fetch(`${API_BASE}/api/mpesa/status/${encodeURIComponent(checkoutRequestId)}`);
-        const data = await res.json();
-        if (data.status === "COMPLETED" || data.status === "FAILED") {
-          onSettled(data);
-          return;
-        }
-      } catch (_) {
-        /* keep polling — network hiccups shouldn't kill the flow */
-      }
-      setTimeout(tick, 3000);
-    })();
-  }
-
-  /* ---------------------------------------------------------------------
      PesaPal Checkout
      Live: browser -> backend (/api/pesapal/order) -> PesaPal, which returns
      a hosted redirect_url. We send the customer there to enter payment
@@ -199,33 +153,18 @@
     openConfirmModal(payload, "pending");
 
     try {
-      if (state.method === "pesapal") {
-        const result = await initiatePesapalPayment(payload);
-        if (LIVE && result.redirectUrl) {
-          confirmTitle.textContent = "Redirecting to PesaPal…";
-          confirmMsg.textContent = "Hold on — we're taking you to PesaPal's secure checkout to finish paying.";
-          window.location.href = result.redirectUrl;
-          return; // page is navigating away
-        }
-        showPendingState(payload, result);
-      } else {
-        const result = await initiateMpesaPayment(payload);
-        showPendingState(payload, result);
-        if (LIVE && result.checkoutRequestId) {
-          pollMpesaStatus(result.checkoutRequestId, (final) => {
-            if (final.status === "COMPLETED") {
-              confirmStatus.style.display = "none";
-              confirmIcon.innerHTML =
-                '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
-              confirmTitle.textContent = "Payment received";
-              confirmMsg.textContent =
-                "Thank you, " + payload.name + ". Your M-Pesa payment of " + formatKsh(payload.amount) + " has been confirmed.";
-            } else {
-              showFailedState();
-            }
-          });
-        }
+      // Both buttons go through PesaPal's hosted checkout — it offers
+      // M-Pesa STK push as a payment option there too, so the customer's
+      // choice on this page is just which option is pre-selected for them.
+      const result = await initiatePesapalPayment(payload);
+      if (LIVE && result.redirectUrl) {
+        confirmTitle.textContent =
+          state.method === "mpesa" ? "Redirecting to complete your M-Pesa payment…" : "Redirecting to PesaPal…";
+        confirmMsg.textContent = "Hold on — we're taking you to a secure checkout page to finish paying.";
+        window.location.href = result.redirectUrl;
+        return; // page is navigating away
       }
+      showPendingState(payload, result);
     } catch (err) {
       showFailedState();
     } finally {
@@ -298,4 +237,41 @@
     div.textContent = str;
     return div.innerHTML;
   }
+
+  /* ---------------------------------------------------------------------
+     Handle the customer landing back here after PesaPal's hosted checkout.
+     Our backend's /api/pesapal/callback verifies the real status with
+     PesaPal, then redirects here with ?payment=success|pending|failed|error
+     --------------------------------------------------------------------- */
+  (function handlePaymentReturn() {
+    const params = new URLSearchParams(window.location.search);
+    const outcome = params.get("payment");
+    if (!outcome) return;
+
+    overlay.classList.add("show");
+    overlay.setAttribute("aria-hidden", "false");
+    confirmDetails.innerHTML = "";
+    confirmStatus.style.display = "none";
+
+    if (outcome === "success") {
+      confirmIcon.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+      confirmTitle.textContent = "Payment received";
+      confirmMsg.textContent = "Thank you! Your payment has been confirmed. We'll be in touch shortly about your order.";
+    } else if (outcome === "pending") {
+      confirmIcon.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>';
+      confirmTitle.textContent = "Payment pending";
+      confirmMsg.textContent = "We haven't received final confirmation yet. If you completed the payment, we'll update this shortly — feel free to contact us if you're unsure.";
+    } else {
+      confirmIcon.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+      confirmTitle.textContent = "Payment could not be completed";
+      confirmMsg.textContent = "Something went wrong or the payment was cancelled. Please try again or contact us on WhatsApp for help.";
+    }
+
+    // Clean the query params out of the URL without reloading the page
+    const cleanUrl = window.location.pathname;
+    window.history.replaceState({}, document.title, cleanUrl);
+  })();
 })();
