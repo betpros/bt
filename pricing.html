@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing &amp; Payment — BetPro | Pay with M-Pesa or PesaPal</title>
+<meta name="description" content="Order a BetPro tailoring service and pay securely with M-Pesa or PesaPal. Choose a preset amount or enter a custom amount for your service.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2248%22 fill=%22%230B2545%22/><text x=%2250%22 y=%2262%22 font-size=%2244%22 text-anchor=%22middle%22 fill=%22%23D4AF37%22 font-family=%22Georgia%22>B</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="47" fill="#0B2545" stroke="#D4AF37" stroke-width="2"/>
+        <circle cx="50" cy="50" r="38" fill="none" stroke="#D4AF37" stroke-width="1" stroke-dasharray="1 5.2" stroke-linecap="round"/>
+        <text x="50" y="61" font-family="Playfair Display, serif" font-size="34" font-weight="700" text-anchor="middle" fill="#E9C767">B</text>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">BetPro</span>
+        <span class="brand-slogan">Better Than Pro</span>
+      </span>
+    </a>
+    <nav class="nav-links" id="nav-links" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="pricing.html" class="active">Pricing &amp; Payment</a>
+      <a href="contact.html">Contact</a>
+      <a href="pricing.html" class="nav-cta">Order Service</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Pricing &amp; Payment</span>
+    <h1>Pay for Your Service</h1>
+    <p>Choose an amount, pick M-Pesa or PesaPal, and complete your order in under a minute.</p>
+  </div>
+</section>
+<div class="tape"></div>
+
+<section class="section section-cream" data-reveal>
+  <div class="container">
+    <form id="payment-form" class="pay-layout" novalidate>
+      <div>
+
+        <div class="form-card">
+          <span class="eyebrow">Step 1</span>
+          <h3 style="margin-top:10px;">Your Details</h3>
+          <div class="tape" style="height:12px;margin:16px 0;"></div>
+
+          <div class="field">
+            <label for="customer-name">Customer Name <span class="req">*</span></label>
+            <input type="text" id="customer-name" name="customerName" placeholder="e.g. Grace Njeri" required>
+            <div class="field-error">Please enter your name.</div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="customer-phone">Phone Number <span class="req">*</span></label>
+              <input type="tel" id="customer-phone" name="customerPhone" placeholder="07XX XXX XXX" required>
+              <div class="field-error">Enter a valid Safaricom number.</div>
+            </div>
+            <div class="field">
+              <label for="customer-email">Email (optional)</label>
+              <input type="email" id="customer-email" name="customerEmail" placeholder="you@example.com">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="service-description">Service Description <span class="req">*</span></label>
+            <textarea id="service-description" name="serviceDescription" placeholder="e.g. Hem two pairs of office trousers" required></textarea>
+            <div class="field-error">Tell us briefly what you need done.</div>
+          </div>
+        </div>
+
+        <div class="form-card mt-24">
+          <span class="eyebrow">Step 2</span>
+          <h3 style="margin-top:10px;">Select Amount (KSh)</h3>
+          <div class="tape" style="height:12px;margin:16px 0;"></div>
+
+          <div class="amount-grid">
+            <button type="button" class="amount-chip" data-amount="20">20<span>KSh</span></button>
+            <button type="button" class="amount-chip" data-amount="30">30<span>KSh</span></button>
+            <button type="button" class="amount-chip" data-amount="50">50<span>KSh</span></button>
+            <button type="button" class="amount-chip" data-amount="100">100<span>KSh</span></button>
+            <button type="button" class="amount-chip" data-amount="200">200<span>KSh</span></button>
+            <button type="button" class="amount-chip" data-amount="500">500<span>KSh</span></button>
+          </div>
+
+          <div class="field amount-custom">
+            <label for="custom-amount">Or enter a custom amount</label>
+            <input type="number" id="custom-amount" min="1" step="1" placeholder="e.g. 1500">
+          </div>
+        </div>
+
+        <div class="form-card mt-24">
+          <span class="eyebrow">Step 3</span>
+          <h3 style="margin-top:10px;">Payment Method</h3>
+          <div class="tape" style="height:12px;margin:16px 0;"></div>
+
+          <div class="pay-methods">
+            <div class="pay-method selected" data-method="mpesa">
+              <div class="pay-method-logo mpesa">M-PESA</div>
+              <b>Pay with M-Pesa</b>
+              <small>STK push to your phone</small>
+            </div>
+            <div class="pay-method" data-method="pesapal">
+              <div class="pay-method-logo pesapal">PesaPal</div>
+              <b>Pay with PesaPal</b>
+              <small>Card, mobile &amp; more</small>
+            </div>
+          </div>
+          <p class="form-note">Your payment is processed securely. BetPro never stores your M-Pesa PIN or card details.</p>
+        </div>
+
+      </div>
+
+      <div>
+        <input type="hidden" id="selected-amount" name="amount">
+        <input type="hidden" id="selected-method" name="method">
+
+        <div class="pay-summary">
+          <span class="eyebrow" style="color:#E9C767;">Order Summary</span>
+          <h3 style="margin-top:14px;">Review &amp; Pay</h3>
+          <div class="summary-row"><span>Service</span><b id="summary-service">General tailoring service</b></div>
+          <div class="summary-row"><span>Payment Method</span><b id="summary-method">M-Pesa</b></div>
+          <div class="summary-total">
+            <span>Total Due</span>
+            <b id="summary-amount">—</b>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block mt-24" id="pay-button" disabled>Pay with M-Pesa</button>
+
+          <div class="pay-security">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4Z"/></svg>
+            Secured checkout · PesaPal &amp; Safaricom Daraja ready
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="section section-white" data-reveal>
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow" style="justify-content:center;">Good to Know</span>
+      <h2>Simple, Transparent Pricing</h2>
+      <p>Preset amounts above are quick-pay options for deposits, consultations and small repairs. For full alterations or custom tailoring, we'll confirm an exact quote before you pay — or you can enter it directly as a custom amount.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="tape" style="opacity:0.15;"></div>
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="brand">
+        <svg class="brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="50" cy="50" r="47" fill="#132B4F" stroke="#D4AF37" stroke-width="2"/>
+          <text x="50" y="61" font-family="Playfair Display, serif" font-size="34" font-weight="700" text-anchor="middle" fill="#E9C767">B</text>
+        </svg>
+        <span class="brand-name">BetPro</span>
+      </a>
+      <p class="footer-about">Providing professional tailoring and clothing solutions across Kenya — quality, affordability and speed in every stitch.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3Z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="https://wa.me/254700000000" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 20l1.1-5.4A8.5 8.5 0 1 1 21 11.5Z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="pricing.html">Pricing &amp; Payment</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="services.html">Trouser Alterations</a></li>
+        <li><a href="services.html">Suit Fitting</a></li>
+        <li><a href="services.html">Custom Tailoring</a></li>
+        <li><a href="services.html">Clothing Repairs</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:+254700000000">+254 700 000 000</a></li>
+        <li><a href="mailto:info@betpro.co.ke">info@betpro.co.ke</a></li>
+        <li><a href="contact.html">Moi Avenue, Nairobi CBD</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>BetPro &copy; <span data-year></span>. Better Than Pro Services.</span>
+    <span>Providing professional tailoring and clothing solutions across Kenya.</span>
+  </div>
+</footer>
+
+<a class="whatsapp-float" href="https://wa.me/254700000000" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.6 1.4 5.2L2 22l4.9-1.3A10 10 0 0 0 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2Zm5.7 14.2c-.2.6-1.3 1.2-1.9 1.3-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.5-.6-2.7-1.2-4.5-3.9-4.6-4.1-.1-.2-1.1-1.5-1.1-2.8s.7-2 .9-2.3c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.7 1.8.8 1.9.1.2.1.3 0 .5-.1.2-.1.3-.3.5l-.4.5c-.1.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.5 1.5.3.1.5.1.7-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.7-.1.3.1 1.7.8 2 1 .3.1.5.2.6.3.1.2.1.9-.1 1.4Z"/></svg>
+</a>
+
+<!-- Payment confirmation modal -->
+<div class="confirm-overlay" id="confirm-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="confirm-title">
+  <div class="confirm-modal">
+    <div class="confirm-icon" id="confirm-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2A6B45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>
+    </div>
+    <div class="confirm-pending" id="confirm-status"><span class="spinner"></span> Awaiting confirmation</div>
+    <h3 id="confirm-title">Processing your payment</h3>
+    <p id="confirm-msg">Please wait while we contact your payment provider.</p>
+    <div class="confirm-details" id="confirm-details-body"></div>
+    <button type="button" class="btn btn-navy btn-block" id="confirm-close">Close</button>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/main.js"></script>
+<script src="js/payment.js"></script>
+</body>
+</html>
