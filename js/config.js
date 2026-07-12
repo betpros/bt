@@ -4,4 +4,4 @@
    Once your backend is deployed on Render, set this to its URL, e.g.:
      window.BETPRO_API_BASE = "https://btpro-6vqw.onrender.com";
 */
-window.BETPRO_API_BASE = https://btpro-6vqw.onrender.com;
+window.BETPRO_API_BASE = "https://btpro-6vqw.onrender.com";
